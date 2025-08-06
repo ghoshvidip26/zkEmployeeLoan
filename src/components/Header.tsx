@@ -8,46 +8,81 @@ export default function Header() {
 
   return (
     <header
-      className="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-black/70 backdrop-blur-md"
+      className="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 border-b border-green-500/20 bg-black/80 backdrop-blur-xl shadow-2xl"
       role="banner"
       aria-label="Site Header"
     >
-      {/* Logo */}
-      <Link href="/" className="flex items-center gap-3">
-        <div className="flex items-center gap-3 text-white font-bold text-xl">
-          <div className="relative">
-            <div className="w-8 h-8 bg-green-500 rounded rotate-12"></div>
-            <div className="absolute top-0 left-0 w-8 h-8 bg-black border-2 border-green-500 rounded -rotate-12"></div>
+      {/* Enhanced Logo */}
+      <Link href="/" className="flex items-center gap-4 group">
+        <div className="flex items-center gap-4 text-white font-bold text-2xl">
+          <div className="relative group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-400 via-yellow-400 to-green-600 rounded-2xl rotate-12 animate-float"></div>
+            <div className="absolute top-0 left-0 w-12 h-12 bg-black border-2 border-yellow-400 rounded-2xl -rotate-12 flex items-center justify-center">
+              <span className="text-sm font-bold bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text">
+                zk
+              </span>
+            </div>
           </div>
-          <span>zkVerify</span>
+          <span className="bg-gradient-to-r from-green-400 via-yellow-300 to-green-500 text-transparent bg-clip-text group-hover:scale-105 transition-transform duration-300">
+            zkEmployeeLoan
+          </span>
         </div>
       </Link>
 
-      {/* Auth Section */}
+      {/* Navigation Menu */}
+      {ready && authenticated && (
+        <nav className="hidden md:flex items-center gap-6">
+          <Link
+            href="/organization"
+            className="text-gray-300 hover:text-green-400 transition-colors duration-300 font-medium hover:scale-105 transform"
+          >
+            Organization
+          </Link>
+          <Link
+            href="/employee"
+            className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium hover:scale-105 transform"
+          >
+            Employee Portal
+          </Link>
+        </nav>
+      )}
+
+      {/* Enhanced Auth Section */}
       <div className="flex items-center gap-4 text-white">
         {ready ? (
           authenticated && user ? (
-            <>
-              <span className="text-sm text-gray-300 hidden sm:inline">
-                {user.email?.address ?? user.wallet?.address ?? "Logged In"}
-              </span>
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-green-500/20 to-yellow-500/20 border border-green-500/30 rounded-xl backdrop-blur-sm">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm text-gray-300 font-medium">
+                  {user.email?.address?.slice(0, 20) ??
+                    user.wallet?.address?.slice(0, 8) ??
+                    "Logged In"}
+                  {((user.email?.address?.length || 0) > 20 ||
+                    (user.wallet?.address?.length || 0) > 8) &&
+                    "..."}
+                </span>
+              </div>
               <button
                 onClick={logout}
-                className="px-4 py-1 rounded bg-red-600 hover:bg-red-700 transition text-sm"
+                className="px-6 py-2 rounded-xl bg-gradient-to-r from-red-500/80 to-red-600/80 hover:from-red-400 hover:to-red-500 transition-all duration-300 text-sm font-semibold transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/25"
               >
                 Logout
               </button>
-            </>
+            </div>
           ) : (
             <button
               onClick={login}
-              className="px-4 py-1 rounded bg-green-600 hover:bg-green-700 transition text-sm"
+              className="px-6 py-2 rounded-xl bg-gradient-to-r from-green-400 via-yellow-400 to-green-500 text-black hover:from-yellow-400 hover:via-green-400 hover:to-yellow-500 transition-all duration-300 text-sm font-bold transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/25"
             >
-              Login
+              Connect Wallet
             </button>
           )
         ) : (
-          <span className="text-sm text-gray-400">Loading...</span>
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 rounded-xl backdrop-blur-sm">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
+            <span className="text-sm text-gray-400">Loading...</span>
+          </div>
         )}
       </div>
     </header>

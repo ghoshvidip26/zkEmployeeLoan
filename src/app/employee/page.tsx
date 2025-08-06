@@ -48,7 +48,7 @@ export default function EmployeePortal() {
             name: "John Doe",
             salary: 120000,
             position: "Senior Software Engineer",
-            organization: "zkVerify Corp",
+            organization: "zkEmployeeLoan Corp",
           };
 
           setUploadedFile({
@@ -174,7 +174,8 @@ export default function EmployeePortal() {
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed animate-slideUp delay-200">
             Upload your employment verification email to unlock personalized
-            financial services powered by zkVerify&apos;s secure proof system
+            financial services powered by zkEmployeeLoan&apos;s secure proof
+            system
           </p>
         </div>
 

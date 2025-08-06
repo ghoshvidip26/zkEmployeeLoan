@@ -5,9 +5,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Some App",
-  description: "This app does something",
-  icons: ["/logo/logo-dark.png"],
+  title: "Organization Dashboard - zkEmployeeLoan",
+  description:
+    "Manage your organization's employee loan programs with zero-knowledge proof verification and secure data management.",
+  icons: ["/logo/karma-gap-logo.svg"],
 };
 
 export default function Layout({
