@@ -5,7 +5,9 @@ import axios from "axios";
 export default function Hero() {
   const { login } = useLogin();
   const { ready, authenticated, user } = usePrivy();
-  console.log("User:", user);
+  console.log("User: ", user);
+  console.log("ID: ", user?.id);
+  console.log("User:", user?.email?.address);
 
   return (
     <section className="flex flex-col items-center justify-center text-center px-6 py-24 md:py-32 bg-gradient-to-b from-black to-neutral-900 overflow-hidden">

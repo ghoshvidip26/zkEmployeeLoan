@@ -88,56 +88,72 @@ export default function EmployeePortal() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-neutral-900 text-white p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,197,94,0.15),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(34,197,94,0.1),transparent_50%)]" />
+      
+      <div className="relative max-w-6xl mx-auto p-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl mb-8 shadow-2xl shadow-green-500/25">
+            <Shield className="h-10 w-10 text-white" />
+          </div>
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-green-100 to-green-300 text-transparent bg-clip-text">
             Employee Financial Portal
           </h1>
-          <p className="text-neutral-400 text-lg">
-            Upload your employment verification email to access financial
-            services
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Upload your employment verification email to unlock personalized financial services 
+            powered by zkVerify&apos;s secure proof system
           </p>
         </div>
 
         {/* Upload Section */}
         {!uploadedFile && (
-          <div className="mb-12">
+          <div className="mb-16">
             <div
               {...getRootProps()}
-              className={`border-2 border-dashed rounded-xl p-12 text-center transition-all cursor-pointer ${
+              className={`relative border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-300 cursor-pointer overflow-hidden ${
                 isDragActive
-                  ? "border-green-400 bg-green-400/10"
-                  : "border-neutral-600 hover:border-green-400 hover:bg-neutral-800/50"
+                  ? "border-green-400 bg-green-400/10 scale-105"
+                  : "border-gray-600 hover:border-green-400 hover:bg-gray-800/30 hover:scale-102"
               }`}
             >
+              {/* Background Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              
               <input {...getInputProps()} />
 
               {isProcessing ? (
-                <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 border-4 border-green-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-                  <h3 className="text-xl font-semibold mb-2">
+                <div className="flex flex-col items-center relative z-10">
+                  <div className="relative mb-8">
+                    <div className="w-20 h-20 border-4 border-green-400/30 rounded-full"></div>
+                    <div className="absolute inset-0 w-20 h-20 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 text-white">
                     Processing Your File...
                   </h3>
-                  <p className="text-neutral-400">
+                  <p className="text-gray-300 text-lg">
                     Verifying DKIM signatures and extracting salary data
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col items-center">
-                  <Upload className="w-16 h-16 text-green-400 mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">
+                <div className="flex flex-col items-center relative z-10">
+                  <div className="p-6 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl mb-6 shadow-2xl">
+                    <Upload className="w-16 h-16 text-green-400" />
+                  </div>
+                  <h3 className="text-3xl font-bold mb-4 text-white">
                     {isDragActive
                       ? "Drop your .eml file here"
-                      : "Upload Employment Verification Email"}
+                      : "Upload Employment Verification"}
                   </h3>
-                  <p className="text-neutral-400 mb-4">
-                    Drag & drop your .eml file here, or click to browse
+                  <p className="text-gray-300 text-lg mb-6 max-w-md">
+                    Drag & drop your .eml file here, or click to browse your files
                   </p>
-                  <p className="text-sm text-neutral-500">
-                    Supported format: .eml files with DKIM signatures
-                  </p>
+                  <div className="flex items-center gap-2 text-sm text-gray-400 bg-gray-800/50 px-4 py-2 rounded-full">
+                    <FileText className="w-4 h-4" />
+                    <span>Supported: .eml files with DKIM signatures</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -146,36 +162,45 @@ export default function EmployeePortal() {
 
         {/* File Verification Status */}
         {uploadedFile && (
-          <div className="mb-8">
-            <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="w-8 h-8 text-green-400" />
+          <div className="mb-12">
+            <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-green-500/20 rounded-2xl">
+                    <CheckCircle className="w-10 h-10 text-green-400" />
+                  </div>
                   <div>
-                    <h3 className="text-xl font-bold text-green-400">
+                    <h3 className="text-2xl font-bold text-green-400 mb-1">
                       File Verified Successfully!
                     </h3>
-                    <p className="text-neutral-300">
-                      DKIM signature validated and salary extracted
+                    <p className="text-gray-300 text-lg">
+                      DKIM signature validated and salary data extracted
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={removeFile}
-                  className="p-2 text-neutral-400 hover:text-red-400 transition-colors"
+                  className="p-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-200"
+                  title="Remove file"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="bg-neutral-800 p-4 rounded-lg">
-                  <p className="text-sm text-neutral-400">File Name</p>
-                  <p className="font-semibold">{uploadedFile.file.name}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-gray-800/50 p-6 rounded-2xl border border-gray-700/50">
+                  <div className="flex items-center gap-3 mb-2">
+                    <FileText className="w-5 h-5 text-green-400" />
+                    <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">File Name</p>
+                  </div>
+                  <p className="font-semibold text-white text-lg">{uploadedFile.file.name}</p>
                 </div>
-                <div className="bg-neutral-800 p-4 rounded-lg">
-                  <p className="text-sm text-neutral-400">File Size</p>
-                  <p className="font-semibold">
+                <div className="bg-gray-800/50 p-6 rounded-2xl border border-gray-700/50">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Download className="w-5 h-5 text-green-400" />
+                    <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">File Size</p>
+                  </div>
+                  <p className="font-semibold text-white text-lg">
                     {(uploadedFile.file.size / 1024).toFixed(2)} KB
                   </p>
                 </div>
