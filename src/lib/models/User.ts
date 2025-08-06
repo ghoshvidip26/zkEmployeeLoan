@@ -1,18 +1,15 @@
-import dbConnect from "./mongodb";
-import { Schema } from "mongoose";
 import mongoose from "mongoose";
 
-dbConnect();
-
-const userSchema = new Schema({
-    emailAddress: {
-        type: String,
-        required: true,
-    },
-    id: {
-        type: String,
-        required: true,
-    }
+const UserSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
 });
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+export default mongoose.models.User || mongoose.model("User", UserSchema);
