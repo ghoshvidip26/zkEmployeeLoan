@@ -13,6 +13,7 @@ import {
   Eye,
   X,
 } from "lucide-react";
+import { saveAs } from "file-saver";
 
 interface UploadedFile {
   file: File;
@@ -151,71 +152,81 @@ export default function EmployeePortal() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,197,94,0.15),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(34,197,94,0.1),transparent_50%)]" />
+      {/* Enhanced Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,197,94,0.2),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,193,7,0.15),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_70%)]" />
+
+      {/* Floating Animation Elements */}
+      <div className="absolute top-20 left-10 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
+      <div className="absolute top-40 right-20 w-3 h-3 bg-green-400 rounded-full animate-pulse opacity-60"></div>
+      <div className="absolute bottom-20 left-20 w-2 h-2 bg-yellow-300 rounded-full animate-bounce opacity-50"></div>
+      <div className="absolute bottom-40 right-10 w-4 h-4 bg-green-300 rounded-full animate-ping opacity-40"></div>
 
       <div className="relative max-w-6xl mx-auto p-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl mb-8 shadow-2xl shadow-green-500/25">
-            <Shield className="h-10 w-10 text-white" />
+        {/* Enhanced Header with Animation */}
+        <div className="text-center mb-16 animate-fadeIn">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 via-yellow-400 to-green-600 rounded-3xl mb-8 shadow-2xl shadow-yellow-500/30 animate-float">
+            <Shield className="h-12 w-12 text-black animate-pulse" />
           </div>
-          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-green-100 to-green-300 text-transparent bg-clip-text">
+          <h1 className="text-7xl font-bold mb-6 bg-gradient-to-r from-green-400 via-yellow-300 to-green-500 text-transparent bg-clip-text animate-slideUp">
             Employee Financial Portal
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed animate-slideUp delay-200">
             Upload your employment verification email to unlock personalized
             financial services powered by zkVerify&apos;s secure proof system
           </p>
         </div>
 
-        {/* Upload Section */}
+        {/* Enhanced Upload Section */}
         {!uploadedFile && (
-          <div className="mb-16">
+          <div className="mb-16 animate-slideUp delay-300">
             <div
               {...getRootProps()}
-              className={`relative border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-300 cursor-pointer overflow-hidden ${
+              className={`relative border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-500 cursor-pointer overflow-hidden transform hover:rotate-1 ${
                 isDragActive
-                  ? "border-green-400 bg-green-400/10 scale-105"
-                  : "border-gray-600 hover:border-green-400 hover:bg-gray-800/30 hover:scale-102"
+                  ? "border-yellow-400 bg-gradient-to-br from-green-400/10 to-yellow-400/10 scale-105 shadow-2xl shadow-yellow-500/20"
+                  : "border-gray-600 hover:border-green-400 hover:bg-gradient-to-br hover:from-green-800/20 hover:to-yellow-800/10 hover:scale-102 hover:shadow-xl hover:shadow-green-500/20"
               }`}
             >
-              {/* Background Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              {/* Enhanced Background Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-green-500/10 opacity-0 hover:opacity-100 transition-opacity duration-500" />
 
               <input {...getInputProps()} />
 
               {isProcessing ? (
-                <div className="flex flex-col items-center relative z-10">
+                <div className="flex flex-col items-center relative z-10 animate-fadeIn">
                   <div className="relative mb-8">
-                    <div className="w-20 h-20 border-4 border-green-400/30 rounded-full"></div>
-                    <div className="absolute inset-0 w-20 h-20 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-24 h-24 border-4 border-yellow-400/30 rounded-full animate-pulse"></div>
+                    <div className="absolute inset-0 w-24 h-24 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="absolute inset-2 w-20 h-20 border-2 border-yellow-400 border-b-transparent rounded-full animate-spin-reverse"></div>
                   </div>
-                  <h3 className="text-2xl font-bold mb-3 text-white">
+                  <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text animate-pulse">
                     Processing Your File...
                   </h3>
-                  <p className="text-gray-300 text-lg">
+                  <p className="text-gray-300 text-lg animate-bounce">
                     Verifying DKIM signatures and extracting salary data
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col items-center relative z-10">
-                  <div className="p-6 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl mb-6 shadow-2xl">
-                    <Upload className="w-16 h-16 text-green-400" />
+                <div className="flex flex-col items-center relative z-10 group">
+                  <div className="p-8 bg-gradient-to-br from-green-500/20 via-yellow-500/20 to-green-600/20 rounded-3xl mb-8 shadow-2xl group-hover:shadow-yellow-500/30 transition-all duration-500 group-hover:scale-110">
+                    <Upload className="w-20 h-20 text-green-400 group-hover:text-yellow-400 transition-colors duration-300 animate-bounce" />
                   </div>
-                  <h3 className="text-3xl font-bold mb-4 text-white">
+                  <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-green-400 via-yellow-300 to-green-500 text-transparent bg-clip-text group-hover:scale-105 transition-transform duration-300">
                     {isDragActive
                       ? "Drop your .eml file here"
                       : "Upload Employment Verification"}
                   </h3>
-                  <p className="text-gray-300 text-lg mb-6 max-w-md">
+                  <p className="text-gray-300 text-xl mb-8 max-w-md group-hover:text-yellow-200 transition-colors duration-300">
                     Drag & drop your .eml file here, or click to browse your
                     files
                   </p>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 bg-gray-800/50 px-4 py-2 rounded-full">
-                    <FileText className="w-4 h-4" />
-                    <span>Supported: .eml files with DKIM signatures</span>
+                  <div className="flex items-center gap-3 text-sm text-gray-400 bg-gradient-to-r from-gray-800/50 to-black/50 px-6 py-3 rounded-full border border-green-500/30 group-hover:border-yellow-500/50 transition-all duration-300">
+                    <FileText className="w-5 h-5 text-green-400 group-hover:text-yellow-400 transition-colors duration-300" />
+                    <span className="group-hover:text-yellow-200 transition-colors duration-300">
+                      Supported: .eml files with DKIM signatures
+                    </span>
                   </div>
                 </div>
               )}
@@ -223,27 +234,27 @@ export default function EmployeePortal() {
           </div>
         )}
 
-        {/* File Verification Status */}
+        {/* Enhanced File Verification Status */}
         {uploadedFile && (
-          <div className="mb-12">
-            <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-3xl p-8 shadow-2xl backdrop-blur-sm">
+          <div className="mb-12 animate-slideUp delay-500">
+            <div className="bg-gradient-to-br from-green-500/15 to-yellow-500/10 border border-green-500/30 rounded-3xl p-8 shadow-2xl backdrop-blur-sm hover:shadow-yellow-500/20 transition-all duration-500 transform hover:scale-[1.02]">
               <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-green-500/20 rounded-2xl">
-                    <CheckCircle className="w-10 h-10 text-green-400" />
+                <div className="flex items-center gap-4 animate-slideIn">
+                  <div className="p-4 bg-gradient-to-br from-green-500/30 to-yellow-500/20 rounded-2xl animate-pulse">
+                    <CheckCircle className="w-12 h-12 text-green-400 animate-bounce" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-green-400 mb-1">
+                    <h3 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text mb-2 animate-fadeIn">
                       File Verified Successfully!
                     </h3>
-                    <p className="text-gray-300 text-lg">
+                    <p className="text-gray-300 text-lg animate-slideIn delay-200">
                       DKIM signature validated and salary data extracted
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={removeFile}
-                  className="p-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-200"
+                  className="p-3 text-gray-400 hover:text-red-400 hover:bg-red-500/20 rounded-xl transition-all duration-300 hover:scale-110 hover:rotate-90"
                   title="Remove file"
                 >
                   <X className="w-6 h-6" />
@@ -340,17 +351,17 @@ export default function EmployeePortal() {
           </div>
         )}
 
-        {/* Financial Services Section */}
+        {/* Enhanced Financial Services Section */}
         {uploadedFile && uploadedFile.verified && (
-          <div className="space-y-8">
+          <div className="space-y-8 animate-slideUp delay-700">
             {/* Service Selection Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Repay */}
               <div
-                className={`bg-gradient-to-br from-blue-500/10 to-blue-600/10 border rounded-2xl p-6 hover:border-blue-400 transition-all group cursor-pointer ${
+                className={`bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-green-600/10 border rounded-3xl p-8 hover:border-yellow-400 transition-all duration-500 group cursor-pointer transform hover:scale-105 hover:rotate-1 hover:shadow-2xl hover:shadow-yellow-500/20 ${
                   selectedService === "repay"
-                    ? "border-blue-400 bg-blue-500/20"
-                    : "border-blue-500/30"
+                    ? "border-yellow-400 bg-gradient-to-br from-green-500/20 to-yellow-500/15 shadow-xl shadow-yellow-500/20"
+                    : "border-green-500/30 hover:border-yellow-400"
                 }`}
                 onClick={() =>
                   setSelectedService(
@@ -358,21 +369,23 @@ export default function EmployeePortal() {
                   )
                 }
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-blue-500/20 rounded-xl group-hover:bg-blue-500/30 transition-colors">
-                    <CreditCard className="w-6 h-6 text-blue-400" />
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-4 bg-gradient-to-br from-green-500/20 to-yellow-500/20 rounded-2xl group-hover:bg-gradient-to-br group-hover:from-yellow-500/30 group-hover:to-green-500/30 transition-all duration-500 group-hover:scale-110">
+                    <CreditCard className="w-8 h-8 text-green-400 group-hover:text-yellow-400 transition-colors duration-300" />
                   </div>
-                  <h3 className="text-xl font-bold">Repay Loans</h3>
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text group-hover:scale-105 transition-transform duration-300">
+                    Repay Loans
+                  </h3>
                 </div>
-                <p className="text-gray-400 mb-4 text-sm">
+                <p className="text-gray-400 mb-6 text-base group-hover:text-yellow-200 transition-colors duration-300">
                   Make payments on existing loans using your verified salary
                   information
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-blue-400 font-medium">
+                  <span className="text-green-400 font-medium group-hover:text-yellow-400 transition-colors duration-300">
                     Available Balance
                   </span>
-                  <span className="text-white font-bold">
+                  <span className="text-white font-bold text-lg animate-pulse">
                     ${uploadedFile.salaryData?.salary.toLocaleString()}
                   </span>
                 </div>
@@ -380,10 +393,10 @@ export default function EmployeePortal() {
 
               {/* Lending */}
               <div
-                className={`bg-gradient-to-br from-green-500/10 to-emerald-600/10 border rounded-2xl p-6 hover:border-green-400 transition-all group cursor-pointer ${
+                className={`bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-green-600/10 border rounded-3xl p-8 hover:border-yellow-400 transition-all duration-500 group cursor-pointer transform hover:scale-105 hover:rotate-1 hover:shadow-2xl hover:shadow-yellow-500/20 ${
                   selectedService === "lending"
-                    ? "border-green-400 bg-green-500/20"
-                    : "border-green-500/30"
+                    ? "border-yellow-400 bg-gradient-to-br from-green-500/20 to-yellow-500/15 shadow-xl shadow-yellow-500/20"
+                    : "border-green-500/30 hover:border-yellow-400"
                 }`}
                 onClick={() =>
                   setSelectedService(
@@ -391,28 +404,34 @@ export default function EmployeePortal() {
                   )
                 }
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-green-500/20 rounded-xl group-hover:bg-green-500/30 transition-colors">
-                    <DollarSign className="w-6 h-6 text-green-400" />
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-4 bg-gradient-to-br from-green-500/20 to-yellow-500/20 rounded-2xl group-hover:bg-gradient-to-br group-hover:from-yellow-500/30 group-hover:to-green-500/30 transition-all duration-500 group-hover:scale-110">
+                    <DollarSign className="w-8 h-8 text-green-400 group-hover:text-yellow-400 transition-colors duration-300" />
                   </div>
-                  <h3 className="text-xl font-bold">Provide Lending</h3>
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text group-hover:scale-105 transition-transform duration-300">
+                    Provide Lending
+                  </h3>
                 </div>
-                <p className="text-gray-400 mb-4 text-sm">
+                <p className="text-gray-400 mb-6 text-base group-hover:text-yellow-200 transition-colors duration-300">
                   Lend your assets to earn interest based on your financial
                   stability
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-green-400 font-medium">Est. APY</span>
-                  <span className="text-white font-bold">8.5%</span>
+                  <span className="text-green-400 font-medium group-hover:text-yellow-400 transition-colors duration-300">
+                    Est. APY
+                  </span>
+                  <span className="text-white font-bold text-lg animate-pulse">
+                    8.5%
+                  </span>
                 </div>
               </div>
 
               {/* Borrowing */}
               <div
-                className={`bg-gradient-to-br from-purple-500/10 to-purple-600/10 border rounded-2xl p-6 hover:border-purple-400 transition-all group cursor-pointer ${
+                className={`bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-green-600/10 border rounded-3xl p-8 hover:border-yellow-400 transition-all duration-500 group cursor-pointer transform hover:scale-105 hover:rotate-1 hover:shadow-2xl hover:shadow-yellow-500/20 ${
                   selectedService === "borrowing"
-                    ? "border-purple-400 bg-purple-500/20"
-                    : "border-purple-500/30"
+                    ? "border-yellow-400 bg-gradient-to-br from-green-500/20 to-yellow-500/15 shadow-xl shadow-yellow-500/20"
+                    : "border-green-500/30 hover:border-yellow-400"
                 }`}
                 onClick={() =>
                   setSelectedService(
@@ -420,52 +439,59 @@ export default function EmployeePortal() {
                   )
                 }
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-purple-500/20 rounded-xl group-hover:bg-purple-500/30 transition-colors">
-                    <TrendingUp className="w-6 h-6 text-purple-400" />
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-4 bg-gradient-to-br from-green-500/20 to-yellow-500/20 rounded-2xl group-hover:bg-gradient-to-br group-hover:from-yellow-500/30 group-hover:to-green-500/30 transition-all duration-500 group-hover:scale-110">
+                    <TrendingUp className="w-8 h-8 text-green-400 group-hover:text-yellow-400 transition-colors duration-300" />
                   </div>
-                  <h3 className="text-xl font-bold">Borrow Funds</h3>
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text group-hover:scale-105 transition-transform duration-300">
+                    Borrow Funds
+                  </h3>
                 </div>
-                <p className="text-gray-400 mb-4 text-sm">
+                <p className="text-gray-400 mb-6 text-base group-hover:text-yellow-200 transition-colors duration-300">
                   Access loans with competitive rates based on your verified
                   income
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-purple-400 font-medium">Max Loan</span>
-                  <span className="text-white font-bold">
-                    ${(uploadedFile.salaryData?.salary * 2).toLocaleString()}
+                  <span className="text-green-400 font-medium group-hover:text-yellow-400 transition-colors duration-300">
+                    Max Loan
+                  </span>
+                  <span className="text-white font-bold text-lg animate-pulse">
+                    $
+                    {(
+                      (uploadedFile.salaryData?.salary || 0) * 2
+                    ).toLocaleString()}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Service Details Panel */}
+            {/* Enhanced Service Details Panel */}
             {selectedService && (
-              <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700 rounded-2xl p-8 backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold text-white">
+              <div className="bg-gradient-to-br from-green-900/20 via-black/40 to-yellow-900/20 border border-green-500/30 rounded-3xl p-8 backdrop-blur-sm shadow-2xl animate-slideUp hover:shadow-yellow-500/20 transition-all duration-500">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-green-400 via-yellow-300 to-green-500 text-transparent bg-clip-text animate-fadeIn">
                     {selectedService === "repay" && "Loan Repayment"}
                     {selectedService === "lending" && "Provide Lending"}
                     {selectedService === "borrowing" && "Borrow Funds"}
                   </h3>
                   <button
                     onClick={() => setSelectedService(null)}
-                    className="p-2 text-gray-400 hover:text-white rounded-lg transition-colors"
+                    className="p-3 text-gray-400 hover:text-yellow-400 hover:bg-yellow-500/10 rounded-xl transition-all duration-300 hover:scale-110 hover:rotate-90"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-6 h-6" />
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-8 animate-slideIn">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-yellow-300 mb-3">
                         {selectedService === "repay" && "Repayment Amount"}
                         {selectedService === "lending" && "Lending Amount"}
                         {selectedService === "borrowing" && "Borrow Amount"}
                       </label>
-                      <div className="relative">
-                        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <div className="relative group">
+                        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-400 group-hover:text-yellow-400 transition-colors duration-300 font-bold text-lg">
                           $
                         </span>
                         <input
@@ -475,17 +501,17 @@ export default function EmployeePortal() {
                           placeholder={
                             selectedService === "borrowing" ? "50000" : "10000"
                           }
-                          className="w-full pl-8 pr-4 py-4 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all"
+                          className="w-full pl-8 pr-4 py-4 bg-gradient-to-r from-gray-700/50 to-gray-800/50 border border-green-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/30 transition-all duration-300 hover:border-green-500"
                         />
                       </div>
                     </div>
 
                     {selectedService === "borrowing" && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <div className="animate-slideIn">
+                        <label className="block text-sm font-medium text-yellow-300 mb-2">
                           Loan Duration (months)
                         </label>
-                        <select className="w-full px-4 py-4 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all">
+                        <select className="w-full px-4 py-4 bg-gradient-to-r from-gray-700/50 to-gray-800/50 border border-green-600/50 rounded-xl text-white focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/30 transition-all duration-300 hover:border-green-500">
                           <option value="6">6 months</option>
                           <option value="12">12 months</option>
                           <option value="24">24 months</option>
@@ -501,13 +527,7 @@ export default function EmployeePortal() {
                           parseFloat(serviceAmount) || undefined
                         )
                       }
-                      className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all shadow-lg ${
-                        selectedService === "repay"
-                          ? "bg-blue-500 hover:bg-blue-400 hover:shadow-blue-500/25"
-                          : selectedService === "lending"
-                          ? "bg-green-500 hover:bg-green-400 hover:shadow-green-500/25"
-                          : "bg-purple-500 hover:bg-purple-400 hover:shadow-purple-500/25"
-                      }`}
+                      className="w-full py-4 px-6 rounded-xl font-semibold text-black bg-gradient-to-r from-green-400 via-yellow-400 to-green-500 hover:from-yellow-400 hover:via-green-400 hover:to-yellow-500 transition-all duration-500 shadow-lg hover:shadow-yellow-500/30 transform hover:scale-105 animate-glow"
                     >
                       {selectedService === "repay" && "Process Repayment"}
                       {selectedService === "lending" && "Start Lending"}
@@ -569,7 +589,7 @@ export default function EmployeePortal() {
                           <span className="text-white">
                             $
                             {(
-                              uploadedFile.salaryData?.salary * 2
+                              (uploadedFile.salaryData?.salary || 0) * 2
                             ).toLocaleString()}
                           </span>
                         </div>
