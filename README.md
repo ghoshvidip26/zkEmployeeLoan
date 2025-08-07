@@ -1,4 +1,4 @@
-<img width="1024" height="1024" alt="ChatGPT Image Aug 7, 2025, 03_30_28 PM" src="https://github.com/user-attachments/assets/38d21bf5-e085-418e-8468-4560f2fb6981" />
+<img width="512" height="512" alt="ChatGPT Image Aug 7, 2025, 03_30_28 PM" src="https://github.com/user-attachments/assets/38d21bf5-e085-418e-8468-4560f2fb6981" />
 # 🛡️ zkEmployeeLoan
 
 **zkEmployeeLoan** is a privacy-preserving employee loan system built using zero-knowledge proofs and blockchain smart contracts. It allows verified employees to apply for loans based on their employment and salary data, without revealing sensitive information on-chain.
