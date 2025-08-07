@@ -13,7 +13,6 @@ import {
   Eye,
   X,
 } from "lucide-react";
-import { saveAs } from "file-saver";
 
 interface UploadedFile {
   file: File;
@@ -41,8 +40,6 @@ export default function EmployeePortal() {
 
       try {
         const content = await file.text();
-
-        // Simulate verification process and salary extraction
         setTimeout(() => {
           const mockSalaryData = {
             name: "John Doe",
@@ -81,7 +78,7 @@ export default function EmployeePortal() {
       return;
     }
 
-    const walletAddress = "0x1234567890123456789012345678901234567890"; // This would come from wallet connection
+    const walletAddress = "0x1234567890123456789012345678901234567890";
 
     try {
       let endpoint = "";
@@ -96,17 +93,17 @@ export default function EmployeePortal() {
       switch (action.toLowerCase()) {
         case "lending":
           endpoint = "/api/financial/lending";
-          requestData.amount = amount || uploadedFile.salaryData.salary / 12; // Monthly salary as default
+          requestData.amount = amount || uploadedFile.salaryData.salary / 12;
           break;
         case "borrowing":
           endpoint = "/api/financial/borrowing";
-          requestData.amount = amount || 50000; // Default borrowing amount
-          requestData.duration = 12; // 12 months default
+          requestData.amount = amount || 50000;
+          requestData.duration = 12;
           break;
         case "loan repayment":
           endpoint = "/api/financial/repay";
-          requestData.amount = amount || 1000; // Default repayment amount
-          requestData.loanId = "LOAN_123456"; // This would be dynamic
+          requestData.amount = amount || 1000;
+          requestData.loanId = "LOAN_123456";
           break;
         case "transaction approval":
           endpoint = "/api/financial/approve";
@@ -151,35 +148,35 @@ export default function EmployeePortal() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
-      {/* Enhanced Background Effects */}
+    <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white relative">
+      {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,197,94,0.2),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,193,7,0.15),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_70%)]" />
 
-      {/* Floating Animation Elements */}
+      {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
       <div className="absolute top-40 right-20 w-3 h-3 bg-green-400 rounded-full animate-pulse opacity-60"></div>
       <div className="absolute bottom-20 left-20 w-2 h-2 bg-yellow-300 rounded-full animate-bounce opacity-50"></div>
       <div className="absolute bottom-40 right-10 w-4 h-4 bg-green-300 rounded-full animate-ping opacity-40"></div>
 
-      <div className="relative max-w-6xl mx-auto p-8">
-        {/* Enhanced Header with Animation */}
+      {/* Main Content Container */}
+      <div className="flex justify-center items-center mt-24 flex-col z-30 min-h-screen px-8">
+        {/* Header Section */}
         <div className="text-center mb-16 animate-fadeIn">
           <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 via-yellow-400 to-green-600 rounded-3xl mb-8 shadow-2xl shadow-yellow-500/30 animate-float">
             <Shield className="h-12 w-12 text-black animate-pulse" />
           </div>
-          <h1 className="text-7xl font-bold mb-6 bg-gradient-to-r from-green-400 via-yellow-300 to-green-500 text-transparent bg-clip-text animate-slideUp">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-green-400 via-yellow-300 to-green-500 text-transparent bg-clip-text animate-slideUp">
             Employee Financial Portal
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed animate-slideUp delay-200">
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed animate-slideUp delay-200">
             Upload your employment verification email to unlock personalized
             financial services powered by zkEmployeeLoan&apos;s secure proof
             system
           </p>
         </div>
 
-        {/* Enhanced Upload Section */}
         {!uploadedFile && (
           <div className="mb-16 animate-slideUp delay-300">
             <div
@@ -190,7 +187,6 @@ export default function EmployeePortal() {
                   : "border-gray-600 hover:border-green-400 hover:bg-gradient-to-br hover:from-green-800/20 hover:to-yellow-800/10 hover:scale-102 hover:shadow-xl hover:shadow-green-500/20"
               }`}
             >
-              {/* Enhanced Background Glow Effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-green-500/10 opacity-0 hover:opacity-100 transition-opacity duration-500" />
 
               <input {...getInputProps()} />
@@ -235,7 +231,6 @@ export default function EmployeePortal() {
           </div>
         )}
 
-        {/* Enhanced File Verification Status */}
         {uploadedFile && (
           <div className="mb-12 animate-slideUp delay-500">
             <div className="bg-gradient-to-br from-green-500/15 to-yellow-500/10 border border-green-500/30 rounded-3xl p-8 shadow-2xl backdrop-blur-sm hover:shadow-yellow-500/20 transition-all duration-500 transform hover:scale-[1.02]">
@@ -336,7 +331,6 @@ export default function EmployeePortal() {
               </div>
             </div>
 
-            {/* Email Preview */}
             {showPreview && (
               <div className="mt-6 bg-neutral-800 rounded-xl p-6 border border-neutral-700">
                 <h4 className="text-lg font-bold mb-4">
@@ -352,7 +346,6 @@ export default function EmployeePortal() {
           </div>
         )}
 
-        {/* Enhanced Financial Services Section */}
         {uploadedFile && uploadedFile.verified && (
           <div className="space-y-8 animate-slideUp delay-700">
             {/* Service Selection Cards */}
@@ -621,35 +614,45 @@ export default function EmployeePortal() {
         )}
 
         {/* Information Section */}
-        <div className="mt-12 bg-neutral-800 rounded-xl p-6 border border-neutral-700">
-          <h3 className="text-xl font-bold mb-4">How It Works</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <FileText className="w-6 h-6 text-green-400" />
+        <div className="mt-16 bg-gradient-to-br from-green-500/10 to-yellow-500/5 backdrop-blur-sm rounded-3xl p-8 border border-green-500/30 shadow-xl">
+          <h3 className="text-2xl font-bold mb-8 text-center bg-gradient-to-r from-green-400 to-yellow-400 text-transparent bg-clip-text">
+            How It Works
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="text-center group p-6 rounded-2xl bg-gradient-to-br from-green-500/5 to-yellow-500/5 border border-green-500/20 hover:border-yellow-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500/20 to-yellow-500/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <FileText className="w-10 h-10 text-green-400 group-hover:text-yellow-400 transition-colors duration-300" />
               </div>
-              <h4 className="font-semibold mb-2">1. Upload Email</h4>
-              <p className="text-sm text-neutral-400">
+              <h4 className="font-bold text-xl mb-4 text-white group-hover:text-green-300 transition-colors duration-300">
+                1. Upload Email
+              </h4>
+              <p className="text-gray-400 group-hover:text-yellow-200 transition-colors duration-300 leading-relaxed">
                 Upload your .eml employment verification email with DKIM
-                signature
+                signature for secure processing
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Shield className="w-6 h-6 text-green-400" />
+            <div className="text-center group p-6 rounded-2xl bg-gradient-to-br from-yellow-500/5 to-green-500/5 border border-yellow-500/20 hover:border-green-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10">
+              <div className="w-20 h-20 bg-gradient-to-br from-yellow-500/20 to-green-500/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Shield className="w-10 h-10 text-yellow-400 group-hover:text-green-400 transition-colors duration-300" />
               </div>
-              <h4 className="font-semibold mb-2">2. ZK Verification</h4>
-              <p className="text-sm text-neutral-400">
+              <h4 className="font-bold text-xl mb-4 text-white group-hover:text-yellow-300 transition-colors duration-300">
+                2. ZK Verification
+              </h4>
+              <p className="text-gray-400 group-hover:text-green-200 transition-colors duration-300 leading-relaxed">
                 Our system verifies your salary using zero-knowledge proofs
+                while maintaining complete privacy
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <DollarSign className="w-6 h-6 text-green-400" />
+            <div className="text-center group p-6 rounded-2xl bg-gradient-to-br from-green-500/5 to-yellow-500/5 border border-green-500/20 hover:border-yellow-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500/20 to-yellow-500/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <DollarSign className="w-10 h-10 text-green-400 group-hover:text-yellow-400 transition-colors duration-300" />
               </div>
-              <h4 className="font-semibold mb-2">3. Access Services</h4>
-              <p className="text-sm text-neutral-400">
+              <h4 className="font-bold text-xl mb-4 text-white group-hover:text-green-300 transition-colors duration-300">
+                3. Access Services
+              </h4>
+              <p className="text-gray-400 group-hover:text-yellow-200 transition-colors duration-300 leading-relaxed">
                 Use your verified income to access financial services privately
+                and securely
               </p>
             </div>
           </div>

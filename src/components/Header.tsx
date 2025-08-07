@@ -12,7 +12,7 @@ export default function Header() {
       role="banner"
       aria-label="Site Header"
     >
-      {/* Enhanced Logo */}
+      {" "}
       <Link href="/" className="flex items-center gap-4 group">
         <div className="flex items-center gap-4 text-white font-bold text-2xl">
           <div className="relative group-hover:scale-110 transition-transform duration-300">
@@ -28,26 +28,6 @@ export default function Header() {
           </span>
         </div>
       </Link>
-
-      {/* Navigation Menu */}
-      {ready && authenticated && (
-        <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="/organization"
-            className="text-gray-300 hover:text-green-400 transition-colors duration-300 font-medium hover:scale-105 transform"
-          >
-            Organization
-          </Link>
-          <Link
-            href="/employee"
-            className="text-gray-300 hover:text-yellow-400 transition-colors duration-300 font-medium hover:scale-105 transform"
-          >
-            Employee Portal
-          </Link>
-        </nav>
-      )}
-
-      {/* Enhanced Auth Section */}
       <div className="flex items-center gap-4 text-white">
         {ready ? (
           authenticated && user ? (

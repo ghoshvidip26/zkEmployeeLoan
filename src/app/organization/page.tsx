@@ -13,8 +13,14 @@ interface Employee {
   position: string;
 }
 
+interface User {
+  id?: string;
+  email?: string;
+}
+
 export default function DashboardPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newEmployee, setNewEmployee] = useState({
@@ -36,8 +42,24 @@ export default function DashboardPage() {
         setIsLoading(false);
       }
     };
+
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("/api/user");
+        console.log("Fetched Users:", res);
+        setUsers(res.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching users", error);
+        setIsLoading(false);
+      }
+    };
+
     fetchEmployees();
+    fetchUsers();
   }, []);
+
+  console.log("Users:", users);
 
   const handleAddEmployee = async () => {
     try {
@@ -214,7 +236,7 @@ export default function DashboardPage() {
                 <input
                   type="email"
                   placeholder="employee@company.com"
-                  value={newEmployee.email}
+                  value={newEmployee.email || users[0]?.email || ""}
                   onChange={(e) =>
                     setNewEmployee({ ...newEmployee, email: e.target.value })
                   }
