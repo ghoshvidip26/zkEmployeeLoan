@@ -1,0 +1,227 @@
+Delivered-To: nithinkatkam504106@gmail.com
+Received: by 2002:a05:7000:c392:b0:69f:da01:da73 with SMTP id jl18csp668169mab;
+        Wed, 6 Aug 2025 22:16:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFynmnkaKWuBnd9L4D2K9UFvALUU99qkcGv3ehh/7quZVBiup7UeUEU+NagZ22R1FrYP8sQ
+X-Received: by 2002:a05:6a21:7e8d:b0:240:358f:3918 with SMTP id adf61e73a8af0-240358f3ae9mr6346441637.40.1754543772315;
+        Wed, 06 Aug 2025 22:16:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1754543772; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EUyAgVbHQS+ShWZsGTi+Xu4QkKEHRsLoFrRqmziCfGCNEXHi5YwiEy6a8qVjJQMHSc
+         Dy93Y3bLyH8mqP6Sm7xamVVwmzKD0sqK7HKbCrZw4OvBMi88Q21U16TFVDmXoy1ptMGC
+         Dg9w4T/jFjTJArfzU8lBDSTdRDALiQqc7FsBnOkW+6md19bRkXsMv66DGoi3Q0QWUWmY
+         d/DJz8F6323N1NlXiONJ28S+kHAfVodsQzystpWPvBruXHq1HzYmboFzdvYxUT/gVlC4
+         MKBjZZ/GQqcwzLUBXY43Mqcpx0qJNGfw+gJRyVr19qJvxEnf4QCVNnCaxpDy1k0K/CMx
+         fq+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:mime-version:from:date:dkim-signature
+         :dkim-signature;
+        bh=F06pzkvEHgCjP++hnZ1nlRoITkICi2FOjA2MaQ1c5Tc=;
+        fh=9mspTzG8SH4g2vyMwuzTkO0pqieZC0Jtk/RiUiXeW9U=;
+        b=Z9NOCH9if8IPdGg5WQRTyv6kibbPe1NuCt/UiLg63zrqJTBZR28Vslfu1tAtr6x6SN
+         wq0165nyUXMvPtTz+1zqXoql6n2daQ6vGNL5BNdEva3GphiJHXl4kjk3pCam1ZhqeHkN
+         5b6oyH/dxEDIZ29bU8fZbVORXNx/Y5EyvaPDxjF6JrZBCRaxlGXWqt6/7oZm8Q1uHzPd
+         YZO+8mKnFo1gzE+Zc3C48WcTnmD5VDyAsdKVvY5cR2/T6y1kR1fQLK+FKKflepoHy3Ip
+         z1p7tTx51wlievtEEtyJHU3D/fq/Tdu1gQdi5AqKnGxYk+f3FRrTI1gYz/yEW7EUeAdf
+         1nAw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@wooecomblinks.online header.s=s1 header.b="eh/kPaBf";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=fkhsHBJC;
+       spf=pass (google.com: domain of bounces+54933170-18d3-nithinkatkam504106=gmail.com@em2271.wooecomblinks.online designates 159.183.224.105 as permitted sender) smtp.mailfrom="bounces+54933170-18d3-nithinkatkam504106=gmail.com@em2271.wooecomblinks.online";
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=wooecomblinks.online
+Return-Path: <bounces+54933170-18d3-nithinkatkam504106=gmail.com@em2271.wooecomblinks.online>
+Received: from s.wfbtzhsw.outbound-mail.sendgrid.net (s.wfbtzhsw.outbound-mail.sendgrid.net. [159.183.224.105])
+        by mx.google.com with ESMTPS id 41be03b00d2f7-b422bb76208si14495919a12.1025.2025.08.06.22.16.10
+        for <nithinkatkam504106@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Aug 2025 22:16:11 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounces+54933170-18d3-nithinkatkam504106=gmail.com@em2271.wooecomblinks.online designates 159.183.224.105 as permitted sender) client-ip=159.183.224.105;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@wooecomblinks.online header.s=s1 header.b="eh/kPaBf";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=fkhsHBJC;
+       spf=pass (google.com: domain of bounces+54933170-18d3-nithinkatkam504106=gmail.com@em2271.wooecomblinks.online designates 159.183.224.105 as permitted sender) smtp.mailfrom="bounces+54933170-18d3-nithinkatkam504106=gmail.com@em2271.wooecomblinks.online";
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=wooecomblinks.online
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wooecomblinks.online;
+	h=content-type:date:from:mime-version:subject:to:cc:content-type:date:
+	feedback-id:from:subject:to;
+	s=s1; bh=F06pzkvEHgCjP++hnZ1nlRoITkICi2FOjA2MaQ1c5Tc=;
+	b=eh/kPaBf2Jwa65UYrOdzMQpWtpqEq4y3FJcmNzJXpPk/7+6/50NjQO0pSI3VSrrPNuEG
+	NHDxtXLgM6mm/H3HoFh2xY88w0bI2bKDDm6qrq/XwLFZvS1fj6DIuFjdHA4g+PCHAAkb8u
+	AKeAHTL3ILNnicDwHG7Qt61TLdH7NEe4IMu4cg+rLaelv2tk3RZl/k7rn9SRnYt7+D+9S3
+	p7ULM1dgR/Z/o/Yq/Q13A2Jdgx9ZrY5ZBFIhTTtFsF+EQ58fMHuKgekLbalkBvgKjPt97H
+	BGFlM0tMBVE65i1tsP053P2PDqOeIqz7ubSSL7ZYZjlfbfU6sy8EAXwnJG4/8cLg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=content-type:date:from:mime-version:subject:to:cc:content-type:date:
+	feedback-id:from:subject:to;
+	s=smtpapi; bh=F06pzkvEHgCjP++hnZ1nlRoITkICi2FOjA2MaQ1c5Tc=;
+	b=fkhsHBJCimgBhKjyTTZHfFVw5VhQqqL2uwsekKBzXTYa6rzs/f5dCN/VJqrecB2C65L1
+	U1++xKLgAHGVJyD+c2kyT4wmD+gI/WGoRvHq8IUnL5B/d4THLrcMPJzn2whNT51/RJSVYN
+	s1ElXCF9RfxHk5LVoYztJA14XxlYBjLaU=
+Received: by recvd-7748d67658-gt9x5 with SMTP id recvd-7748d67658-gt9x5-1-68943698-23
+	2025-08-07 05:16:08.510200695 +0000 UTC m=+5488283.053237953
+Received: from NTQ5MzMxNzA (unknown)
+	by geopod-ismtpd-9 (SG) with HTTP
+	id zZ9EGBpFRJKRpxdXBodJvw
+	Thu, 07 Aug 2025 05:16:08.163 +0000 (UTC)
+Content-Type: multipart/alternative; boundary=0e4cad7af66eaeb8cfe474ff32231af3478d4e03adfe6ca216aded9455e4
+Date: Thu, 07 Aug 2025 05:16:08 +0000 (UTC)
+From: support@wooecomblinks.online
+Mime-Version: 1.0
+Message-ID: <zZ9EGBpFRJKRpxdXBodJvw@geopod-ismtpd-9>
+Subject: =?UTF-8?B?8J+OiQ==?= TechCorp Inc Salary Verification - $120000
+ Annual Compensation
+X-Company-Email: hr@techcorp.com
+X-Company-Name: TechCorp Inc
+X-DKIM-Domain: support@wooecomblinks.online
+X-Employee-Name: Nithin Reddy Katkam
+X-Payroll-Verification: DKIM-ZK-ENABLED
+X-Position: Senior Software Engineer
+X-Salary-Amount: 120000
+X-Salary-Month: August 2023
+X-Wallet-Address: 0x742d35Cc6634C0532925a3b8D8228d1A5d6C4C9e
+X-ZK-Reference: ZK-VERIFY-1754543767289
+X-SG-EID: 
+ =?us-ascii?Q?u001=2E0C7K3f28Upwcc83Ki=2Fsssd26Ivyln28WZ9HFVZ4p2IyzM0m0BFXafEKrQ?=
+ =?us-ascii?Q?qKq8Oh+uvjVNEVS7rco+X18pa00DQiLyrZRNinq?=
+ =?us-ascii?Q?5dwpq5ZmTENj1Mu9o+hVa5ebuSIx8dAapYXvsM=2F?=
+ =?us-ascii?Q?G8oyUdJtsPtSkFMynuEfJRCNwvnqWXIwb9SGMDC?=
+ =?us-ascii?Q?OOXiF6qytdTYIJvX4tBwZZ3QytblLkgPs4cj70p?=
+ =?us-ascii?Q?uCtEmrDhK35mYozBedhRBE=3D?=
+To: nithinkatkam504106@gmail.com
+X-Entity-ID: u001.fSxooHz1FxL9u4zQMpLlIA==
+
+--0e4cad7af66eaeb8cfe474ff32231af3478d4e03adfe6ca216aded9455e4
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0
+
+
+Payroll Verification Service - Official Salary Document
+
+=3D=3D=3D ZK CIRCUIT PARSEABLE DATA =3D=3D=3D
+SALARY_AMOUNT: 120000
+WALLET_ADDRESS: 0x742d35Cc6634C0532925a3b8D8228d1A5d6C4C9e
+EMPLOYEE_NAME: Nithin Reddy Katkam
+COMPANY_EMAIL: hr@techcorp.com
+=3D=3D=3D END ZK DATA =3D=3D=3D
+
+Employment Confirmation:
+Your annual salary from TechCorp Inc is $120000 USDC
+
+Details:
+- Employee: Nithin Reddy Katkam
+- Position: Senior Software Engineer
+- Company: TechCorp Inc
+- Company Contact: hr@techcorp.com
+- Annual Salary: $120000 USDC
+- Pay Period: August 2023
+- Wallet: 0x742d35Cc6634C0532925a3b8D8228d1A5d6C4C9e
+
+ZK PROOF VERIFICATION:
+This DKIM-signed email can be used for ZK proofs.
+Reference: ZK-VERIFY-1754543767289
+
+Verify company authorization at hr@techcorp.com
+Payroll Verification Service - ZK Privacy-First
+   =20=
+
+--0e4cad7af66eaeb8cfe474ff32231af3478d4e03adfe6ca216aded9455e4
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=utf-8
+Mime-Version: 1.0
+
+
+    <div style=3D"font-family: Inter, sans-serif; background: #f5f7fa; padd=
+ing: 24px;">
+      <div style=3D"max-width: 600px; margin: auto; background: #fff; borde=
+r-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); overflow: hidden;"=
+>
+        <div style=3D"background: #10b981; color: white; padding: 24px;">
+          <h2 style=3D"margin: 0;">=F0=9F=8E=89 Salary Verification Documen=
+t</h2>
+          <p style=3D"margin: 4px 0 0;">Official TechCorp Inc Compensation =
+Statement</p>
+        </div>
+
+        <div style=3D"padding: 24px;">
+          <!-- ZK EXTRACTABLE FIELDS START -->
+          <div id=3D"zk-payroll-data" style=3D"border: 1px solid #e5e7eb; p=
+adding: 16px; margin: 16px 0; background: #f9fafb;">
+            <h3 style=3D"margin-top: 0; color: #1f2937;">=F0=9F=92=B0 ZK Ve=
+rification Data</h3>
+           =20
+            <!-- SIMPLIFIED FORMAT FOR CIRCUIT PARSING -->
+            <p>SALARY_AMOUNT: 120000</p>
+            <p>WALLET_ADDRESS: 0x742d35Cc6634C0532925a3b8D8228d1A5d6C4C9e</=
+p>
+            <p>EMPLOYEE_NAME: Nithin Reddy Katkam</p>
+            <p>COMPANY_EMAIL: hr@techcorp.com</p>
+           =20
+            <!-- Additional data for display -->
+            <p><strong>Salary Month:</strong> August 2023</p>
+            <p><strong>Company:</strong> TechCorp Inc</p>
+            <p><strong>Position:</strong> Senior Software Engineer</p>
+          </div>
+          <!-- ZK EXTRACTABLE FIELDS END -->
+         =20
+          <h3 style=3D"margin-top: 0;">=F0=9F=92=BC Employment Confirmation=
+</h3>
+          <p style=3D"font-size: 18px; margin: 16px 0;"><strong>Congratulat=
+ions! Your annual salary from TechCorp Inc is $120000 USDC</strong></p>
+         =20
+          <div style=3D"background: #f8fafc; padding: 16px; border-radius: =
+8px; margin: 16px 0;">
+            <p><strong>Employee:</strong> Nithin Reddy Katkam</p>
+            <p><strong>Position:</strong> Senior Software Engineer</p>
+            <p><strong>Company:</strong> TechCorp Inc</p>
+            <p><strong>Company Contact:</strong> hr@techcorp.com</p>
+            <p><strong>Annual Salary:</strong> $120000 USDC</p>
+            <p><strong>Pay Period:</strong> August 2023</p>
+            <p><strong>Wallet Address:</strong> 0x742d35Cc6634C0532925a3b8D=
+8228d1A5d6C4C9e</p>
+          </div>
+
+          <div style=3D"background: #e8f5e8; padding: 16px; border-radius: =
+8px; margin: 16px 0; border-left: 4px solid #10b981;">
+            <h4 style=3D"margin-top: 0; color: #065f46;">=E2=9C=85 Salary T=
+hreshold Verification</h4>
+            <p style=3D"color: #065f46; margin-bottom: 8px;">Annual compens=
+ation of <strong>$120000</strong> verified for August 2023.</p>
+            <p style=3D"color: #065f46; margin-bottom: 0; font-size: 14px;"=
+>Authorized by hr@techcorp.com</p>
+          </div>
+
+          <hr style=3D"margin: 24px 0;" />
+
+          <div style=3D"background: #fef3c7; padding: 16px; border-radius: =
+8px; border-left: 4px solid #f59e0b;">
+            <h4 style=3D"margin-top: 0; color: #92400e;">=F0=9F=94=90 ZK Pr=
+oof Verification</h4>
+            <p style=3D"color: #92400e; margin-bottom: 8px;">This DKIM-sign=
+ed email from <strong>support@wooecomblinks.online</strong> can be used to =
+generate zero-knowledge proofs.</p>
+            <p style=3D"color: #92400e; margin-bottom: 0; font-size: 14px;"=
+>Reference: ZK-VERIFY-1754543767288</p>
+          </div>
+
+          <hr style=3D"margin: 24px 0;" />
+
+          <p style=3D"font-size: 13px; color: #666;">This is an official sa=
+lary verification document. Verify company authorization at hr@techcorp.com=
+</p>
+          <p style=3D"font-size: 13px; color: #888; margin-top: 24px;">&cop=
+y; 2025 Payroll Verification Service =E2=80=A2 ZK Privacy-First =F0=9F=94=
+=90</p>
+        </div>
+      </div>
+    </div>
+    <img src=3D"https://u54933170.ct.sendgrid.net/wf/open?upn=3Du001.3-2BQZ=
+h4PBtodfLFr-2FTjGBxI2YziWxphLyERA8yPDA4dX98qK6ma5kFHzvOzU87FFYpRmEbbY6-2FDl=
+8G8w4sZQgRmzavuqgVDfOHiWYgswjyWaFuFR6Gv9Ino8xDiUYUwl8MunTv8Pge-2Fh0yepRhz42=
+N5oJ9OpSdxkK-2FhfV6g5kStfgdPVK-2BSX1-2B9XxzVhNv-2B00v9DDbM-2FuInb-2B6afO246=
+NVs0J9QrmprfDr7myrZkg1rs-3D" alt=3D"" width=3D"1" height=3D"1" border=3D"0"=
+ style=3D"height:1px !important;width:1px !important;border-width:0 !import=
+ant;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !impo=
+rtant;margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !i=
+mportant;padding-right:0 !important;padding-left:0 !important;"/>
+--0e4cad7af66eaeb8cfe474ff32231af3478d4e03adfe6ca216aded9455e4--

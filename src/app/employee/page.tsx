@@ -1,5 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
+import { useWriteContract } from "wagmi";
+import abi from "./abi";
 import { useDropzone } from "react-dropzone";
 import {
   Upload,
@@ -32,6 +34,36 @@ export default function EmployeePortal() {
   const [showPreview, setShowPreview] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [serviceAmount, setServiceAmount] = useState<string>("");
+
+  const { writeContract } = useWriteContract();
+  const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+  const handleCreateLoan = async () => {
+    try {
+      writeContract({
+        abi,
+        address: (CONTRACT_ADDRESS as `0x${string}`) || "0x",
+        functionName: "createLoan",
+        args: [],
+      });
+      console.log("✅ Loan created successfully");
+    } catch (error) {
+      console.log("❌ Error creating loan:", error);
+    }
+  };
+
+  const handleRepayLoan = async (repayAmount: number) => {
+    try {
+      writeContract({
+        abi,
+        address: (CONTRACT_ADDRESS as `0x${string}`) || "0x",
+        functionName: "repayLoan",
+        args: [repayAmount],
+      });
+      console.log("✅ Loan repay successful");
+    } catch (error) {
+      console.log("❌ Error repaying loan:", error);
+    }
+  };
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -78,67 +110,29 @@ export default function EmployeePortal() {
       return;
     }
 
-    const walletAddress = "0x1234567890123456789012345678901234567890";
+    console.log(
+      `Initiating ${action} with verified salary: $${uploadedFile.salaryData.salary}`
+    );
 
     try {
-      let endpoint = "";
-      let requestData: any = {
-        walletAddress,
-        emailData: {
-          containsSalaryInfo: true,
-          salary: uploadedFile.salaryData.salary,
-        },
-      };
-
       switch (action.toLowerCase()) {
         case "lending":
-          endpoint = "/api/financial/lending";
-          requestData.amount = amount || uploadedFile.salaryData.salary / 12;
+          await handleCreateLoan();
+          alert("✅ Lending transaction successful!");
           break;
-        case "borrowing":
-          endpoint = "/api/financial/borrowing";
-          requestData.amount = amount || 50000;
-          requestData.duration = 12;
+
+        case "repay":
+          await handleRepayLoan(amount || 1000);
+          alert("✅ Loan repayment successful!");
           break;
-        case "loan repayment":
-          endpoint = "/api/financial/repay";
-          requestData.amount = amount || 1000;
-          requestData.loanId = "LOAN_123456";
-          break;
-        case "transaction approval":
-          endpoint = "/api/financial/approve";
-          requestData.transactionId = "TXN_" + Date.now();
-          requestData.transactionType = "lending";
-          requestData.amount = amount || 1000;
-          break;
+
         default:
-          alert("Unknown financial action");
-          return;
-      }
-
-      console.log(
-        `Initiating ${action} with verified salary: $${uploadedFile.salaryData.salary}`
-      );
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        alert(`${action} request processed successfully! ${result.message}`);
-        console.log("API Response:", result);
-      } else {
-        alert(`Error processing ${action}: ${result.error}`);
+          alert("❌ Unknown financial action");
+          break;
       }
     } catch (error) {
-      console.error(`Error with ${action}:`, error);
-      alert(`Failed to process ${action} request. Please try again.`);
+      console.error(`❌ Error with ${action}:`, error);
+      alert(`Failed to process ${action}. Please try again.`);
     }
   };
 
@@ -325,8 +319,7 @@ export default function EmployeePortal() {
                   {showPreview ? "Hide" : "View"} Email Content
                 </button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors">
-                  <Download className="w-4 h-4" />
-                  Download Verification Report
+                  Generate proof
                 </button>
               </div>
             </div>
