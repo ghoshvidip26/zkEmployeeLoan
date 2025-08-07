@@ -4,6 +4,12 @@ import { useWriteContract } from "wagmi";
 import abi from "./abi";
 import { useDropzone } from "react-dropzone";
 import {
+  parseEmailContent,
+  validateLoanEligibility,
+} from "../../utils/emailParser";
+import { generateDKIMProof } from "../../utils/generateDKIMProofClean";
+import { ethers } from "ethers";
+import {
   Upload,
   FileText,
   CheckCircle,
@@ -34,27 +40,77 @@ export default function EmployeePortal() {
   const [showPreview, setShowPreview] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [serviceAmount, setServiceAmount] = useState<string>("");
+  const [zkProof, setZkProof] = useState<any>(null);
+  const [isGeneratingProof, setIsGeneratingProof] = useState(false);
 
   const { writeContract } = useWriteContract();
   const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-  const handleCreateLoan = async () => {
+  const handleCreateLoan = async (zkProofData: any) => {
+    console.log("🏦 Starting loan creation process...");
+
     try {
-      writeContract({
-        abi,
+      if (!zkProofData) {
+        console.error("❌ No ZK proof data provided");
+        alert("No ZK proof available. Please generate proof first.");
+        return;
+      }
+
+      console.log("📊 ZK Proof data received:", {
+        hasProof: !!zkProofData.proof,
+        hasSalaryHash: !!zkProofData.salary_hash,
+        hasNullifier: !!zkProofData.nullifier,
+        hasTimestamp: !!zkProofData.timestamp,
+      });
+
+      const loanAmount = parseFloat(serviceAmount) || 0;
+      console.log("💰 Loan amount requested:", loanAmount);
+
+      if (loanAmount <= 0) {
+        throw new Error("Invalid loan amount. Please enter a valid amount.");
+      }
+
+      // Convert to USDC format (6 decimals)
+      const loanAmountWei = ethers.parseUnits(loanAmount.toString(), 6);
+      console.log("🔢 Loan amount in USDC wei:", loanAmountWei.toString());
+
+      console.log("📝 Contract parameters:");
+      console.log("  - Contract Address:", CONTRACT_ADDRESS);
+      console.log("  - ABI length:", abi.abi?.length || 0);
+      console.log("  - Function: createLoan");
+
+      console.log("🚀 Calling writeContract...");
+      await writeContract({
+        abi: abi.abi,
         address: (CONTRACT_ADDRESS as `0x${string}`) || "0x",
         functionName: "createLoan",
-        args: [],
+        args: [
+          zkProofData.proof,
+          zkProofData.salary_hash,
+          loanAmountWei,
+          zkProofData.nullifier,
+          zkProofData.timestamp,
+        ],
       });
+
       console.log("✅ Loan created successfully");
-    } catch (error) {
-      console.log("❌ Error creating loan:", error);
+      alert("✅ Loan created successfully! Transaction submitted.");
+    } catch (error: any) {
+      console.error("❌ Error creating loan:", error);
+      console.error("Error details:", {
+        message: error.message,
+        code: error.code,
+        data: error.data,
+        stack: error.stack,
+      });
+
+      alert(`❌ Failed to create loan: ${error.message}`);
     }
   };
 
   const handleRepayLoan = async (repayAmount: number) => {
     try {
       writeContract({
-        abi,
+        abi: abi.abi,
         address: (CONTRACT_ADDRESS as `0x${string}`) || "0x",
         functionName: "repayLoan",
         args: [repayAmount],
@@ -72,7 +128,40 @@ export default function EmployeePortal() {
 
       try {
         const content = await file.text();
-        setTimeout(() => {
+        console.log("📄 File content loaded, length:", content.length);
+
+        // Parse the email content
+        console.log("🔍 Parsing email content for salary data...");
+        const parsedData = parseEmailContent(content);
+
+        if (parsedData) {
+          console.log("✅ Email parsing successful:", {
+            employeeName: parsedData.salaryData.employeeName,
+            salary: parsedData.salaryData.salaryAmount,
+            company: parsedData.salaryData.company,
+            dkimDomain: parsedData.dkimData.domain,
+          });
+
+          setUploadedFile({
+            file,
+            content,
+            verified: true,
+            salaryData: {
+              name: parsedData.salaryData.employeeName,
+              salary: parseFloat(
+                parsedData.salaryData.salaryAmount.replace(/[^0-9.]/g, "")
+              ),
+              position: parsedData.salaryData.position || "Employee",
+              organization: parsedData.salaryData.company,
+            },
+          });
+
+          console.log(
+            "🎯 File processed successfully, ready for proof generation"
+          );
+        } else {
+          console.warn("⚠️ Email parsing failed, using fallback mock data");
+          // Fallback to mock data if parsing fails
           const mockSalaryData = {
             name: "John Doe",
             salary: 120000,
@@ -86,12 +175,21 @@ export default function EmployeePortal() {
             verified: true,
             salaryData: mockSalaryData,
           });
-          setIsProcessing(false);
-        }, 2000);
-      } catch (error) {
-        console.error("Error reading file:", error);
+        }
+
+        setIsProcessing(false);
+      } catch (error: any) {
+        console.error("❌ Error processing file:", error);
+        console.error("Error details:", {
+          message: error.message,
+          stack: error.stack,
+        });
+        alert(`Failed to process file: ${error.message}`);
         setIsProcessing(false);
       }
+    } else {
+      console.error("❌ Invalid file type. Please upload a .eml file");
+      alert("Please upload a valid .eml file");
     }
   }, []);
 
@@ -117,13 +215,26 @@ export default function EmployeePortal() {
     try {
       switch (action.toLowerCase()) {
         case "lending":
-          await handleCreateLoan();
+          if (!zkProof) {
+            alert("Please generate ZK proof first");
+            return;
+          }
+          await handleCreateLoan(zkProof);
           alert("✅ Lending transaction successful!");
           break;
 
         case "repay":
           await handleRepayLoan(amount || 1000);
           alert("✅ Loan repayment successful!");
+          break;
+
+        case "borrowing":
+          if (!zkProof) {
+            alert("Please generate ZK proof first");
+            return;
+          }
+          await handleCreateLoan(zkProof);
+          alert("✅ Loan creation successful!");
           break;
 
         default:
@@ -133,6 +244,148 @@ export default function EmployeePortal() {
     } catch (error) {
       console.error(`❌ Error with ${action}:`, error);
       alert(`Failed to process ${action}. Please try again.`);
+    }
+  };
+
+  const generateProof = async () => {
+    if (!uploadedFile?.content) {
+      alert("Please upload an email first");
+      return;
+    }
+    console.log("ZK Proof generation started...");
+    setIsGeneratingProof(true);
+    console.log("🔄 Starting ZK proof generation...");
+
+    try {
+      // Step 1: Parse email content
+      console.log("📧 Parsing email content...");
+      const parsedData = parseEmailContent(uploadedFile.content);
+      console.log("✅ Email parsed successfully:", parsedData);
+
+      if (!parsedData) {
+        throw new Error("Failed to parse email content");
+      }
+
+      // Step 2: Extract DKIM data for proof generation
+      console.log("🔍 Extracting DKIM verification data...");
+      const { salaryData, dkimData } = parsedData;
+
+      // Convert salary amount to number
+      const salaryAmount = parseFloat(
+        salaryData.salaryAmount.replace(/[^0-9.]/g, "")
+      );
+      console.log("💰 Extracted salary amount:", salaryAmount);
+
+      // Step 3: Validate loan eligibility (30% of salary)
+      const requestedLoan = parseFloat(serviceAmount) || salaryAmount * 0.3;
+      const maxLoanAmount = salaryAmount * 0.3;
+
+      console.log("🏦 Loan validation:");
+      console.log("  - Requested loan:", requestedLoan);
+      console.log("  - Max allowed (30%):", maxLoanAmount);
+      console.log("  - Eligible:", requestedLoan <= maxLoanAmount);
+
+      if (requestedLoan > maxLoanAmount) {
+        throw new Error(
+          `Loan amount $${requestedLoan} exceeds 30% of salary ($${maxLoanAmount})`
+        );
+      }
+
+      // Step 4: Generate nullifier (unique identifier)
+      const userSecret = ethers.randomBytes(32);
+      const nullifier = ethers.keccak256(
+        ethers.concat([
+          ethers.toUtf8Bytes(salaryData.employeeName),
+          ethers.toUtf8Bytes(salaryData.walletAddress),
+          userSecret,
+        ])
+      );
+
+      console.log("🔒 Generated nullifier:", nullifier);
+
+      // Step 5: Create proof inputs
+      const proofInputs = {
+        // DKIM verification data
+        emailHeader: dkimData.header,
+        emailBody: dkimData.body,
+        dkimSignature: dkimData.signature,
+        domain: dkimData.domain,
+
+        // Salary verification
+        salaryAmount: salaryAmount,
+        employeeName: salaryData.employeeName,
+        walletAddress: salaryData.walletAddress,
+
+        // Loan data
+        loanAmount: requestedLoan,
+        nullifier: nullifier,
+        timestamp: Math.floor(Date.now() / 1000),
+      };
+
+      console.log("📊 Proof inputs prepared:", {
+        salaryAmount: proofInputs.salaryAmount,
+        loanAmount: proofInputs.loanAmount,
+        domain: proofInputs.domain,
+        nullifier: proofInputs.nullifier,
+      });
+
+      // Step 6: Generate ZK proof using the DKIM circuit
+      console.log("⚡ Generating ZK proof with circuit...");
+
+      // Create a showLog function for debug output
+      const showLog = (message: string) => {
+        console.log(message);
+      };
+
+      // Get user wallet address from parsed data or use a default
+      const userWalletAddress =
+        salaryData.walletAddress ||
+        "0x742d35Cc6634C0532925a3b8D8228d1A5d6C4C9e";
+
+      const proof = await generateDKIMProof(
+        uploadedFile.content, // emailContent
+        requestedLoan, // loanAmount
+        userWalletAddress, // userAddress
+        showLog // showLog function
+      );
+
+      if (!proof) {
+        throw new Error("Failed to generate ZK proof");
+      }
+
+      console.log("✅ ZK proof generated successfully!");
+      console.log("📋 Proof data:", {
+        proofSize: proof.proof?.length || 0,
+        publicInputs: proof.publicInputs || [],
+      });
+
+      // Transform proof data for contract interaction
+      const zkProofData = {
+        proof: proof.proof,
+        salary_hash: ethers.keccak256(
+          ethers.toUtf8Bytes(salaryAmount.toString())
+        ),
+        nullifier: nullifier,
+        timestamp: Math.floor(Date.now() / 1000),
+        publicInputs: proof.publicInputs,
+      };
+      console.log("ZK proof data: ", zkProof);
+
+      // Step 7: Store proof for contract interaction
+      setZkProof(zkProofData);
+      alert("✅ ZK Proof generated successfully!");
+    } catch (error: any) {
+      console.error("❌ ZK Proof generation failed:", error);
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        cause: error.cause,
+      });
+
+      alert(`❌ Failed to generate proof: ${error.message}`);
+    } finally {
+      setIsGeneratingProof(false);
+      console.log("🏁 Proof generation process completed");
     }
   };
 
@@ -318,8 +571,22 @@ export default function EmployeePortal() {
                   <Eye className="w-4 h-4" />
                   {showPreview ? "Hide" : "View"} Email Content
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors">
-                  Generate proof
+                <button
+                  onClick={generateProof}
+                  disabled={isGeneratingProof}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 disabled:bg-gray-600 rounded-lg transition-colors"
+                >
+                  {isGeneratingProof ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Shield className="w-4 h-4" />
+                      {zkProof ? "✅ Proof Ready" : "Generate ZK Proof"}
+                    </>
+                  )}
                 </button>
               </div>
             </div>
@@ -514,11 +781,16 @@ export default function EmployeePortal() {
                           parseFloat(serviceAmount) || undefined
                         )
                       }
-                      className="w-full py-4 px-6 rounded-xl font-semibold text-black bg-gradient-to-r from-green-400 via-yellow-400 to-green-500 hover:from-yellow-400 hover:via-green-400 hover:to-yellow-500 transition-all duration-500 shadow-lg hover:shadow-yellow-500/30 transform hover:scale-105 animate-glow"
+                      disabled={!zkProof && selectedService !== "repay"}
+                      className="w-full py-4 px-6 rounded-xl font-semibold text-black bg-gradient-to-r from-green-400 via-yellow-400 to-green-500 hover:from-yellow-400 hover:via-green-400 hover:to-yellow-500 disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-500 shadow-lg hover:shadow-yellow-500/30 transform hover:scale-105 animate-glow"
                     >
-                      {selectedService === "repay" && "Process Repayment"}
-                      {selectedService === "lending" && "Start Lending"}
-                      {selectedService === "borrowing" && "Apply for Loan"}
+                      {!zkProof && selectedService !== "repay"
+                        ? "Generate ZK Proof First"
+                        : selectedService === "repay"
+                        ? "Process Repayment"
+                        : selectedService === "lending"
+                        ? "Start Lending"
+                        : "Apply for Loan"}
                     </button>
                   </div>
 
